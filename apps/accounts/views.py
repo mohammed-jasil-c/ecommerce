@@ -4,6 +4,8 @@ from rest_framework import status
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from apps.accounts.serializers import RegisterSerializer
+
 
 class LoginView(APIView):
 
@@ -33,6 +35,14 @@ class LoginView(APIView):
         )
 
         return response
+    
+class Register(APIView):
+    def post(self, request):
+        serializer = RegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            return Response({"message": "User registered successfully"}, status=201)
+        return Response(serializer.errors, status=400)    
 
 
 from rest_framework.permissions import AllowAny
@@ -104,14 +114,13 @@ class LogoutView(APIView):
         return response
     
     
-from rest_framework.permissions import IsAuthenticated
+from .permissions import IsAdminUserRole
 
-class TestProtectedView(APIView):
-    permission_classes = [IsAuthenticated]
+class AdminOnlyView(APIView):
+    permission_classes = [IsAdminUserRole]
 
     def get(self, request):
         return Response({
-            "message": "Authenticated successfully",
+            "message": "Welcome Admin",
             "user": request.user.email
         })
-

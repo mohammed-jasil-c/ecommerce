@@ -41,10 +41,10 @@ INSTALLED_APPS = [
     
     # Local apps
     'apps.accounts',
-    # 'apps.products',
-    # 'apps.cart',
-    # 'apps.orders',
-    # 'apps.wishlist',
+    'apps.products',
+    'apps.cart',
+    'apps.orders',
+    'apps.wishlist',
 ]
 
 MIDDLEWARE = [
@@ -174,3 +174,8 @@ SIMPLE_JWT = {
 AUTH_USER_MODEL = 'accounts.User'
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
